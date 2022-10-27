@@ -11,15 +11,15 @@ Activate using your preferred shell (e.g. fish)
 ```
 source venv/bin/activate.fish
 ```
-
+Install required package 
 ```
 pip install -r requirements.txt 
 ```
 
 ## Usage
-This repo is designed to be use as notes for keeping track of memory statistics when writing code. Additionally the provided files can be used to test different allocation strategies and experiment with optimizations. 
+This repo is designed to be use as notes for keeping track of memory statistics when writing code. Additionally, the provided files can be used to test different allocation strategies and experiment with optimizations. 
 
-Note: As noted in the `support_fxns.py` module, you can simulate a memory leak/garbage collection failure, using `time.sleep()`. This works if you make the function `async` as `time.sleep()` freezes the resources/memory and prevents them from being modified by calling path. If one desires to correctly test an async function with sleep, remember to use `asyncio`'s sleep function for handling memory properly. 
+Note: As noted in the `support_fxns.py` module, you can simulate a memory leak/garbage collection failure, using `time.sleep()`. This works if you make the function `async` as `time.sleep()` freezes the resources/memory and prevents them from being modified by calling path. If one desires to correctly test an async function with `sleep()`, remember to use `asyncio`'s sleep function for handling memory properly. 
 
 To run 
 ```
@@ -57,7 +57,7 @@ x = [2] * 10
 print(asizeof.asizeof(x)) 
 print(asizeof.asized(x, detail = 1).format()) 
 ```
-Note: the above example uses a list of int literals. As each `2` object is identical to the following object in the list, only the first reference of `2`. Python's private heap optimization iterates the reference count to the `2` object as opposed to allocating an identical object. This can have interesting behavior especially with regard to mutable objects. 
+Note: the above example uses a list of int literals. As each `2` object is identical to the following object in the list, only the first reference of `2` uses its full memory requirements. Python's private heap optimization iterates the reference count to the `2` object as opposed to allocating an identical object. This can have interesting behavior especially with regard to mutable objects. 
 
 ### Block Summation using `SummaryTracker()`
 ```py
@@ -74,7 +74,7 @@ tr.print_diff()
 test_fxn()
 tr.print_diff()
 ```
-This can be use to places check points of memory usage in the code and automatically diff them. This can be useful to check for memory leaks. The above example simulates a memory leak by exploring the behavior of async functions when calling `sleep()`. 
+This can be used to place checkpoints of memory usage in the code and automatically diff them. This can be useful to check for memory leaks among other purposes. The above example simulates a memory leak by exploiting the behavior of async functions when calling `sleep()`. 
 
 ### Checking the memory size of objects using `ClassTracker()`
 ```py
@@ -99,7 +99,7 @@ c_tr.create_snapshot()
 c_tr.stats.print_summary()
 ```
 
-One can use `ClassTracker()` snapshots to track memory usage of an object over time. The above example tracks the allocation of three lists of size `n`, in this case 1000. One can also you asizeof.asized to get direct size of an object at any given point in time via the following:
+One can use `ClassTracker()` snapshots to track memory usage of an object over time. The above example tracks the allocation of three lists of size `n`, in this case 1000. One can also use asizeof.asized to get the direct size of an object at any given point in time via the following:
 ```py
 asizeof.asized(my_class, detail = 1).format()
 ```
